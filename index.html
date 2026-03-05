@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TeaJay Diary | TeaJay Konsult Ltd.</title>
+  <meta name="description" content="Your personal diary app by TeaJay Konsult Ltd." />
+  <meta name="theme-color" content="#0a1a0e" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0a1a0e;
+      --surface: #101f14;
+      --card: #162b1b;
+      --card-hover: #1c3422;
+      --border: rgba(80, 160, 90, 0.15);
+      --accent: #c9a84c;
+      --accent-dim: #a8843a;
+      --green: #3d9e4a;
+      --green-dark: #275e30;
+      --text: #e8dfc8;
+      --text-sec: #8fad7a;
+      --text-muted: #4e6b48;
+      --danger: #c0392b;
+      --r: 14px;
+      --shadow: 0 6px 30px rgba(0,0,0,0.5);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      background-image:
+        radial-gradient(ellipse at 15% 10%, rgba(25,70,30,0.35) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 90%, rgba(10,40,15,0.45) 0%, transparent 55%);
+    }
+
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,26,14,0.96);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 13px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-icon {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--green), var(--accent));
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 19px;
+    }
+    .brand-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; line-height: 1.1; }
+    .brand-sub { font-size: 10px; color: var(--text-sec); text-transform: uppercase; letter-spacing: 1px; }
+    .hdr-right { display: flex; align-items: center; gap: 8px; }
+    #hdr-email { font-size: 11px; color: var(--text-muted); display: none; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 10px 20px; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+      cursor: pointer; border: none; text-decoration: none; transition: all .2s;
+    }
+    .btn-primary { background: linear-gradient(135deg,#2d7d3a,#1e5c28); color:#fff; box-shadow:0 2px 14px rgba(45,125,58,.3); }
+    .btn-primary:hover { background: linear-gradient(135deg,#38a047,#2d7d3a); transform:translateY(-1px); }
+    .btn-gold { background: linear-gradient(135deg,var(--accent),var(--accent-dim)); color:#1a1000; font-weight:600; }
+    .btn-gold:hover { filter:brightness(1.1); transform:translateY(-1px); }
+    .btn-ghost { background:transparent; color:var(--text-sec); border:1px solid var(--border); }
+    .btn-ghost:hover { background:var(--card); color:var(--text); }
+    .btn-danger { background:transparent; color:var(--danger); border:1px solid rgba(192,57,43,.3); font-size:12px; padding:7px 13px; }
+    .btn-danger:hover { background:rgba(192,57,43,.1); }
+    .btn-sm { padding:7px 14px; font-size:13px; }
+    .btn-full { width:100%; }
+
+    #auth-screen {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 20px;
+    }
+    .auth-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 38px 32px;
+      width: 100%; max-width: 400px;
+      box-shadow: var(--shadow);
+    }
+    .auth-top { text-align: center; margin-bottom: 28px; }
+    .auth-top .auth-icon { font-size: 50px; display: block; margin-bottom: 10px; }
+    .auth-top h2 { font-family:'Playfair Display',serif; font-size:26px; font-weight:700; }
+    .auth-top p { font-family:'Lora',serif; font-style:italic; color:var(--text-sec); font-size:14px; margin-top:4px; }
+
+    .auth-tabs { display:flex; background:var(--bg); border-radius:9px; padding:3px; margin-bottom:22px; }
+    .tab-btn {
+      flex:1; padding:8px; text-align:center; font-size:13px; font-weight:500;
+      cursor:pointer; border-radius:7px; color:var(--text-muted); transition:all .2s;
+    }
+    .tab-btn.active { background:var(--card); color:var(--text); box-shadow:0 1px 5px rgba(0,0,0,.3); }
+
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display:block; font-size:11px; font-weight:500; color:var(--text-sec); text-transform:uppercase; letter-spacing:.8px; margin-bottom:7px; }
+    .form-group input {
+      width:100%; background:var(--bg); border:1px solid var(--border);
+      border-radius:8px; padding:11px 14px; font-size:14px; color:var(--text);
+      font-family:'DM Sans',sans-serif; outline:none; transition:border-color .2s;
+    }
+    .form-group input:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(61,158,74,.12); }
+
+    .auth-error {
+      background:rgba(192,57,43,.1); border:1px solid rgba(192,57,43,.3);
+      border-radius:8px; padding:10px 14px; font-size:13px; color:#e57373;
+      margin-bottom:14px; display:none;
+    }
+
+    #app-screen { display:none; max-width:680px; margin:0 auto; padding:22px 16px 120px; }
+
+    .greeting { margin-bottom:22px; }
+    .g-date { font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:5px; }
+    .g-text { font-family:'Playfair Display',serif; font-size:26px; font-weight:700; line-height:1.2; }
+    .g-text em { color:var(--accent); font-style:normal; }
+
+    .offline-badge {
+      display:none; background:rgba(192,57,43,.12); border:1px solid rgba(192,57,43,.25);
+      border-radius:8px; padding:9px 14px; font-size:12px; color:#e57373;
+      margin-bottom:16px; text-align:center;
+    }
+    .offline-badge.show { display:block; }
+
+    .new-entry-bar {
+      background:var(--card); border:1px solid var(--border); border-radius:var(--r);
+      padding:15px 18px; display:flex; align-items:center; gap:12px;
+      cursor:pointer; margin-bottom:26px; transition:all .2s;
+    }
+    .new-entry-bar:hover { border-color:var(--green-dark); background:var(--card-hover); }
+    .new-entry-bar span { color:var(--text-muted); font-family:'Lora',serif; font-style:italic; font-size:15px; }
+
+    .sec-title {
+      font-family:'Playfair Display',serif; font-size:17px; font-weight:600;
+      color:var(--text); margin-bottom:14px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .sec-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    .entries-list { display:flex; flex-direction:column; gap:12px; }
+
+    .entry-card {
+      background:var(--card); border:1px solid var(--border); border-radius:var(--r);
+      padding:20px; cursor:pointer; transition:all .2s;
+      position:relative; overflow:hidden;
+    }
+    .entry-card::before {
+      content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+      background:linear-gradient(180deg,var(--green),var(--accent));
+      opacity:0; transition:opacity .2s;
+    }
+    .entry-card:hover { border-color:var(--green-dark); background:var(--card-hover); transform:translateX(3px); }
+    .entry-card:hover::before { opacity:1; }
+    .e-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:7px; }
+    .e-date { font-size:11px; color:var(--text-sec); text-transform:uppercase; letter-spacing:.7px; }
+    .e-mood { font-size:16px; }
+    .e-title { font-family:'Playfair Display',serif; font-size:17px; font-weight:600; color:var(--text); margin-bottom:5px; line-height:1.3; }
+    .e-preview { font-family:'Lora',serif; font-size:13px; color:var(--text-sec); line-height:1.65; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
+    .empty-state { text-align:center; padding:60px 20px; }
+    .empty-state .ei { font-size:48px; margin-bottom:14px; opacity:.45; }
+    .empty-state h3 { font-family:'Playfair Display',serif; font-size:20px; margin-bottom:8px; }
+    .empty-state p { font-size:14px; color:var(--text-muted); font-family:'Lora',serif; font-style:italic; }
+
+    .loading { text-align:center; padding:50px; color:var(--text-muted); font-family:'Lora',serif; font-style:italic; }
+
+    .overlay {
+      display:none; position:fixed; inset:0;
+      background:rgba(4,10,5,.88); backdrop-filter:blur(7px);
+      z-index:200; align-items:flex-end; justify-content:center;
+    }
+    .overlay.open { display:flex; }
+    .modal {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:20px 20px 0 0;
+      width:100%; max-width:680px;
+      max-height:92vh; overflow-y:auto;
+      padding:26px 22px 44px;
+      animation:slideUp .28s ease;
+    }
+    @keyframes slideUp { from{transform:translateY(40px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+    .modal-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+    .modal-hdr-title { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; }
+    .modal-close {
+      width:32px; height:32px; background:var(--card); border:1px solid var(--border);
+      border-radius:50%; display:flex; align-items:center; justify-content:center;
+      cursor:pointer; color:var(--text-sec); font-size:15px; transition:all .2s;
+    }
+    .modal-close:hover { background:var(--card-hover); color:var(--text); }
+
+    .entry-title-input {
+      width:100%; background:transparent; border:none;
+      border-bottom:1px solid var(--border); padding:10px 0;
+      font-family:'Playfair Display',serif; font-size:21px; font-weight:600;
+      color:var(--text); outline:none; margin-bottom:16px;
+    }
+    .entry-title-input::placeholder { color:var(--text-muted); }
+
+    .mood-row { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:16px; }
+    .mood-chip {
+      padding:5px 12px; background:var(--bg); border:1px solid var(--border);
+      border-radius:20px; font-size:12px; cursor:pointer; color:var(--text-sec);
+      display:flex; align-items:center; gap:4px; transition:all .2s;
+    }
+    .mood-chip.sel { background:var(--green-dark); border-color:var(--green); color:var(--text); }
+
+    .entry-body-input {
+      width:100%; background:transparent; border:none;
+      font-family:'Lora',serif; font-size:15px; line-height:1.85;
+      color:var(--text); outline:none; resize:none; min-height:220px;
+    }
+    .entry-body-input::placeholder { color:var(--text-muted); font-style:italic; }
+
+    .modal-footer {
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top:22px; padding-top:18px; border-top:1px solid var(--border);
+    }
+
+    .view-title { font-family:'Playfair Display',serif; font-size:23px; font-weight:700; margin-bottom:8px; line-height:1.3; }
+    .view-meta { display:flex; align-items:center; gap:10px; margin-bottom:20px; padding-bottom:18px; border-bottom:1px solid var(--border); }
+    .view-date { font-size:12px; color:var(--text-sec); }
+    .view-body { font-family:'Lora',serif; font-size:15px; line-height:1.9; color:var(--text-sec); white-space:pre-wrap; }
+
+    .share-block { margin-top:18px; padding-top:16px; border-top:1px solid var(--border); }
+    .share-lbl { font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.8px; margin-bottom:10px; }
+    .share-row { display:flex; gap:8px; flex-wrap:wrap; }
+    .s-btn {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:8px 14px; border-radius:8px; font-size:12px; font-weight:500;
+      cursor:pointer; border:none; text-decoration:none; transition:all .2s;
+    }
+    .s-wa { background:#1b7a43; color:#fff; }
+    .s-wa:hover { background:#25a55a; }
+    .s-fb { background:#1a3d7c; color:#fff; }
+    .s-fb:hover { background:#2351a5; }
+    .s-x  { background:#111; color:#fff; border:1px solid #333; }
+    .s-x:hover { background:#222; }
+
+    #ios-banner {
+      display:none; position:fixed; bottom:80px; left:14px; right:14px;
+      background:var(--card); border:1px solid var(--border); border-radius:14px;
+      padding:14px 40px 14px 16px; z-index:150; box-shadow:var(--shadow);
+    }
+    #ios-banner p { font-size:13px; color:var(--text-sec); line-height:1.5; }
+    #ios-banner strong { color:var(--text); }
+    #ios-close-btn { position:absolute; top:10px; right:13px; font-size:16px; cursor:pointer; color:var(--text-muted); background:none; border:none; }
+
+    #install-btn {
+      display:none; position:fixed; bottom:22px; right:18px; z-index:150;
+      background:linear-gradient(135deg,var(--green),var(--green-dark));
+      color:#fff; border:none; border-radius:50px;
+      padding:12px 18px; font-size:13px; font-weight:600;
+      font-family:'DM Sans',sans-serif; cursor:pointer;
+      box-shadow:0 4px 22px rgba(45,125,58,.5);
+      align-items:center; gap:6px;
+      animation:bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+    footer { text-align:center; padding:18px; font-size:11px; color:var(--text-muted); border-top:1px solid var(--border); margin-top:30px; }
+
+    @media(max-width:420px) {
+      .auth-card { padding:28px 18px; }
+      .modal { padding:22px 16px 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-icon">🌿</div>
+    <div>
+      <div class="brand-name">TeaJay Diary</div>
+      <div class="brand-sub">TeaJay Konsult Ltd.</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <span id="hdr-email"></span>
+    <button class="btn btn-ghost btn-sm" id="logout-btn" style="display:none" onclick="handleLogout()">Sign Out</button>
+  </div>
+</header>
+
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-top">
+      <span class="auth-icon">🌲</span>
+      <h2>Your Diary Awaits</h2>
+      <p>A quiet place for your thoughts</p>
+    </div>
+
+    <div class="auth-tabs">
+      <div class="tab-btn active" id="tab-in" onclick="switchTab('login')">Sign In</div>
+      <div class="tab-btn" id="tab-up" onclick="switchTab('signup')">Sign Up</div>
+    </div>
+
+    <div id="auth-err" class="auth-error"></div>
+
+    <div class="form-group" id="name-grp" style="display:none">
+      <label>Full Name</label>
+      <input type="text" id="auth-name" placeholder="Your name" />
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="auth-email" placeholder="your@email.com" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="auth-pass" placeholder="••••••••" />
+    </div>
+    <button class="btn btn-primary btn-full" id="auth-btn" onclick="handleAuth()">Sign In</button>
+
+    <div class="share-block" style="margin-top:24px">
+      <div class="share-lbl">Share this app</div>
+      <div class="share-row">
+        <a class="s-btn s-wa" href="https://wa.me/?text=Check%20out%20TeaJay%20Diary%20%F0%9F%8C%BF%20https%3A%2F%2Fteajaykonsult-diary.vercel.app" target="_blank">💬 WhatsApp</a>
+        <a class="s-btn s-fb" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fteajaykonsult-diary.vercel.app" target="_blank">📘 Facebook</a>
+        <a class="s-btn s-x" href="https://twitter.com/intent/tweet?text=Check%20out%20TeaJay%20Diary%20%F0%9F%8C%BF%20https%3A%2F%2Fteajaykonsult-diary.vercel.app" target="_blank">𝕏 Share</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="app-screen">
+  <div class="greeting">
+    <div class="g-date" id="g-date"></div>
+    <div class="g-text">Hello, <em id="g-name">Friend</em> 👋</div>
+  </div>
+
+  <div class="offline-badge" id="offline-badge">📴 You're offline — your entries are still available and any changes will sync when you reconnect.</div>
+
+  <div class="new-entry-bar" onclick="openNew()">
+    <span>✏️&nbsp; What's on your mind today?</span>
+  </div>
+
+  <div class="sec-title">Your Entries</div>
+  <div class="entries-list" id="entries-list">
+    <div class="loading">Loading your entries…</div>
+  </div>
+
+  <footer>© 2026 TeaJay Konsult Ltd. All rights reserved.</footer>
+</div>
+
+<!-- WRITE / EDIT MODAL -->
+<div class="overlay" id="write-modal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-hdr-title" id="write-modal-title">New Entry</div>
+      <div class="modal-close" onclick="closeWrite()">✕</div>
+    </div>
+    <input type="text" class="entry-title-input" id="w-title" placeholder="Give this entry a title…" />
+    <div class="mood-row">
+      <div class="mood-chip" data-mood="😊" onclick="pickMood(this)">😊 Happy</div>
+      <div class="mood-chip" data-mood="😔" onclick="pickMood(this)">😔 Sad</div>
+      <div class="mood-chip" data-mood="😤" onclick="pickMood(this)">😤 Frustrated</div>
+      <div class="mood-chip" data-mood="😌" onclick="pickMood(this)">😌 Calm</div>
+      <div class="mood-chip" data-mood="🥳" onclick="pickMood(this)">🥳 Excited</div>
+      <div class="mood-chip" data-mood="🤔" onclick="pickMood(this)">🤔 Thinking</div>
+    </div>
+    <textarea class="entry-body-input" id="w-body" placeholder="Pour your thoughts here… this is your safe space."></textarea>
+    <div class="modal-footer">
+      <button class="btn btn-gold" onclick="saveEntry()">💾 Save Entry</button>
+      <button class="btn btn-ghost" onclick="closeWrite()">Cancel</button>
+      <button class="btn btn-danger" id="del-btn" style="display:none;margin-left:auto" onclick="deleteEntry()">🗑 Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW MODAL -->
+<div class="overlay" id="view-modal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-hdr-title">Entry</div>
+      <div class="modal-close" onclick="closeView()">✕</div>
+    </div>
+    <div class="view-title" id="v-title"></div>
+    <div class="view-meta">
+      <span class="view-date" id="v-date"></span>
+      <span id="v-mood" style="font-size:18px"></span>
+    </div>
+    <div class="view-body" id="v-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-primary btn-sm" onclick="editFromView()">✏️ Edit</button>
+      <button class="btn btn-ghost btn-sm" onclick="closeView()">Close</button>
+    </div>
+    <div class="share-block">
+      <div class="share-lbl">Share this app</div>
+      <div class="share-row">
+        <a class="s-btn s-wa" id="v-wa" href="#" target="_blank">💬 WhatsApp</a>
+        <a class="s-btn s-fb" id="v-fb" href="#" target="_blank">📘 Facebook</a>
+        <a class="s-btn s-x"  id="v-x"  href="#" target="_blank">𝕏 Share</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="ios-banner">
+  <button id="ios-close-btn" onclick="document.getElementById('ios-banner').style.display='none'">✕</button>
+  <p>📲 <strong>Install TeaJay Diary on iOS:</strong> Tap the <strong>Share</strong> icon in Safari, then tap <strong>"Add to Home Screen"</strong>.</p>
+</div>
+
+<button id="install-btn" onclick="installPWA()">⬇️ Install App</button>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+  import { initializeFirestore, persistentLocalCache, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, where } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDzyFx1l6qrfylHDjIMbDiPW9C6At91t2s",
+    authDomain: "teajaykonsult-diary.firebaseapp.com",
+    projectId: "teajaykonsult-diary",
+    storageBucket: "teajaykonsult-diary.firebasestorage.app",
+    messagingSenderId: "225725983226",
+    appId: "1:225725983226:web:ca6b9d2cf9cdca146cdc43"
+  };
+
+  const fbApp = initializeApp(firebaseConfig);
+  const auth  = getAuth(fbApp);
+
+  // ── OFFLINE PERSISTENCE ──
+  const db = initializeFirestore(fbApp, {
+    localCache: persistentLocalCache()
+  });
+
+  // ── OFFLINE DETECTION ──
+  window.addEventListener('online',  () => document.getElementById('offline-badge').classList.remove('show'));
+  window.addEventListener('offline', () => document.getElementById('offline-badge').classList.add('show'));
+  if (!navigator.onLine) document.getElementById('offline-badge').classList.add('show');
+
+  let user = null, tab = 'login', editId = null, mood = '', prompt = null, entries = [], viewing = null;
+
+  window.handleAuth    = handleAuth;
+  window.handleLogout  = handleLogout;
+  window.switchTab     = switchTab;
+  window.openNew       = openNew;
+  window.closeWrite    = closeWrite;
+  window.closeView     = closeView;
+  window.saveEntry     = saveEntry;
+  window.deleteEntry   = deleteEntry;
+  window.pickMood      = pickMood;
+  window.editFromView  = editFromView;
+  window.installPWA    = installPWA;
+
+  onAuthStateChanged(auth, u => { u ? showApp(u) : showAuth(); });
+
+  function showAuth() {
+    user = null;
+    document.getElementById('auth-screen').style.display = 'flex';
+    document.getElementById('app-screen').style.display  = 'none';
+    document.getElementById('logout-btn').style.display  = 'none';
+    document.getElementById('hdr-email').style.display   = 'none';
+  }
+
+  function showApp(u) {
+    user = u;
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('app-screen').style.display  = 'block';
+    document.getElementById('logout-btn').style.display  = 'inline-flex';
+    document.getElementById('hdr-email').textContent     = u.email;
+    document.getElementById('hdr-email').style.display   = 'inline';
+    document.getElementById('g-name').textContent        = u.displayName || u.email.split('@')[0];
+    document.getElementById('g-date').textContent        = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    loadEntries();
+    checkInstall();
+  }
+
+  function switchTab(t) {
+    tab = t;
+    document.getElementById('tab-in').classList.toggle('active', t==='login');
+    document.getElementById('tab-up').classList.toggle('active', t==='signup');
+    document.getElementById('name-grp').style.display = t==='signup' ? 'block' : 'none';
+    document.getElementById('auth-btn').textContent    = t==='login' ? 'Sign In' : 'Create Account';
+    hideErr();
+  }
+
+  async function handleAuth() {
+    const email = document.getElementById('auth-email').value.trim();
+    const pass  = document.getElementById('auth-pass').value.trim();
+    const name  = document.getElementById('auth-name').value.trim();
+    hideErr();
+    if (!email || !pass) return showErr('Please fill in all fields.');
+    try {
+      if (tab === 'signup') {
+        if (!name) return showErr('Please enter your name.');
+        const cred = await createUserWithEmailAndPassword(auth, email, pass);
+        await updateProfile(cred.user, { displayName: name });
+      } else {
+        await signInWithEmailAndPassword(auth, email, pass);
+      }
+    } catch(e) { showErr(errMsg(e.code)); }
+  }
+
+  async function handleLogout() { await signOut(auth); }
+
+  function showErr(m) { const el=document.getElementById('auth-err'); el.textContent=m; el.style.display='block'; }
+  function hideErr()  { document.getElementById('auth-err').style.display='none'; }
+
+  function errMsg(code) {
+    return ({
+      'auth/invalid-email':'Invalid email address.',
+      'auth/user-not-found':'No account found.',
+      'auth/wrong-password':'Incorrect password.',
+      'auth/email-already-in-use':'Email already registered.',
+      'auth/weak-password':'Password must be 6+ characters.',
+      'auth/invalid-credential':'Invalid email or password.',
+    })[code] || 'Something went wrong. Try again.';
+  }
+
+  async function loadEntries() {
+    const list = document.getElementById('entries-list');
+    list.innerHTML = '<div class="loading">Loading your entries…</div>';
+    try {
+      const q = query(collection(db,'entries'), where('uid','==',user.uid), orderBy('createdAt','desc'));
+      const snap = await getDocs(q);
+      entries = [];
+      snap.forEach(d => entries.push({id:d.id,...d.data()}));
+      render();
+    } catch(e) {
+      list.innerHTML = `<div class="loading">Could not load entries.<br><small style="font-size:11px">Check Firestore rules & indexes.</small></div>`;
+    }
+  }
+
+  function render() {
+    const list = document.getElementById('entries-list');
+    if (!entries.length) {
+      list.innerHTML = `<div class="empty-state"><div class="ei">🌿</div><h3>Your diary is empty</h3><p>Start by writing your first entry. This is your safe space.</p></div>`;
+      return;
+    }
+    list.innerHTML = entries.map(e => `
+      <div class="entry-card" onclick="openView('${e.id}')">
+        <div class="e-meta">
+          <span class="e-date">${fmtDate(e.createdAt)}</span>
+          <span class="e-mood">${e.mood||''}</span>
+        </div>
+        <div class="e-title">${esc(e.title||'Untitled')}</div>
+        <div class="e-preview">${esc(e.body||'')}</div>
+      </div>`).join('');
+
+    window.openView = id => {
+      viewing = entries.find(e=>e.id===id);
+      if (!viewing) return;
+      document.getElementById('v-title').textContent = viewing.title||'Untitled';
+      document.getElementById('v-date').textContent  = fmtDate(viewing.createdAt);
+      document.getElementById('v-mood').textContent  = viewing.mood||'';
+      document.getElementById('v-body').textContent  = viewing.body||'';
+      const url = 'https://teajaykonsult-diary.vercel.app';
+      const txt = `Check out TeaJay Diary 🌿 ${url}`;
+      document.getElementById('v-wa').href = `https://wa.me/?text=${encodeURIComponent(txt)}`;
+      document.getElementById('v-fb').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+      document.getElementById('v-x').href  = `https://twitter.com/intent/tweet?text=${encodeURIComponent(txt)}`;
+      document.getElementById('view-modal').classList.add('open');
+    };
+  }
+
+  function openNew() {
+    editId=''; mood='';
+    document.getElementById('w-title').value = '';
+    document.getElementById('w-body').value  = '';
+    document.querySelectorAll('.mood-chip').forEach(c=>c.classList.remove('sel'));
+    document.getElementById('write-modal-title').textContent = 'New Entry';
+    document.getElementById('del-btn').style.display = 'none';
+    document.getElementById('write-modal').classList.add('open');
+  }
+
+  function editFromView() {
+    if (!viewing) return;
+    closeView();
+    editId = viewing.id; mood = viewing.mood||'';
+    document.getElementById('w-title').value = viewing.title||'';
+    document.getElementById('w-body').value  = viewing.body||'';
+    document.querySelectorAll('.mood-chip').forEach(c=>c.classList.toggle('sel',c.dataset.mood===mood));
+    document.getElementById('write-modal-title').textContent = 'Edit Entry';
+    document.getElementById('del-btn').style.display = 'inline-flex';
+    document.getElementById('write-modal').classList.add('open');
+  }
+
+  function closeWrite() { document.getElementById('write-modal').classList.remove('open'); }
+  function closeView()  { document.getElementById('view-modal').classList.remove('open'); }
+
+  function pickMood(el) {
+    document.querySelectorAll('.mood-chip').forEach(c=>c.classList.remove('sel'));
+    el.classList.add('sel'); mood = el.dataset.mood;
+  }
+
+  async function saveEntry() {
+    const title = document.getElementById('w-title').value.trim();
+    const body  = document.getElementById('w-body').value.trim();
+    if (!title && !body) return;
+    const data = {
+      uid: user.uid,
+      title: title||'Untitled',
+      body, mood,
+      createdAt: editId ? (entries.find(e=>e.id===editId)?.createdAt||Date.now()) : Date.now(),
+      updatedAt: Date.now()
+    };
+    try {
+      if (editId) { await updateDoc(doc(db,'entries',editId),data); }
+      else        { await addDoc(collection(db,'entries'),data); }
+      closeWrite(); loadEntries();
+    } catch(e) { alert('Could not save. Try again.'); }
+  }
+
+  async function deleteEntry() {
+    if (!editId || !confirm('Delete this entry? This cannot be undone.')) return;
+    try { await deleteDoc(doc(db,'entries',editId)); closeWrite(); loadEntries(); }
+    catch(e) { alert('Could not delete.'); }
+  }
+
+  function fmtDate(ts) {
+    if (!ts) return '';
+    return new Date(ts).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+  }
+  function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault(); prompt = e;
+    document.getElementById('install-btn').style.display = 'flex';
+  });
+
+  function installPWA() {
+    if (!prompt) return;
+    prompt.prompt();
+    prompt.userChoice.then(()=>{ prompt=null; document.getElementById('install-btn').style.display='none'; });
+  }
+
+  function checkInstall() {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if (isIOS && !navigator.standalone) document.getElementById('ios-banner').style.display = 'block';
+  }
+
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
+</script>
+</body>
+</html>
