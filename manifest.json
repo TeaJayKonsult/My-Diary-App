@@ -1,13 +1,19 @@
 {
   "name": "TeaJay Diary",
   "short_name": "TJ Diary",
-  "description": "Your personal diary app by TeaJay Konsult Ltd.",
+  "description": "A personal diary app with mood tracking and offline support by TeaJay Konsult Ltd.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a1a0e",
   "theme_color": "#0a1a0e",
   "orientation": "portrait",
   "id": "com.teajaykonsult.diary",
+  "lang": "en",
+  "dir": "ltr",
+  "scope": "/",
+  "categories": ["lifestyle", "productivity", "utilities"],
+  "iarc_rating_id": "",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icon-192.png",
@@ -20,6 +26,15 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "TeaJay Diary Home Screen"
     }
   ]
 }
