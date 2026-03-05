@@ -1,6 +1,7 @@
+
 {
   "name": "TeaJay Diary",
-  "short_name": "TJ Diary",
+  "short_name": "TeaJay Konsult Diary",
   "description": "A personal diary app with mood tracking and offline support by TeaJay Konsult Ltd.",
   "start_url": "/",
   "display": "standalone",
@@ -11,8 +12,11 @@
   "lang": "en",
   "dir": "ltr",
   "scope": "/",
-  "categories": ["lifestyle", "productivity", "utilities"],
-  "iarc_rating_id": "",
+  "categories": [
+    "lifestyle",
+    "productivity",
+    "utilities"
+  ],
   "prefer_related_applications": false,
   "icons": [
     {
