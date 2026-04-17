@@ -120,7 +120,7 @@
       margin-bottom:14px; display:none;
     }
 
-    #app-screen { display:none; max-width:680px; margin:0 auto; padding:22px 16px 120px; }
+    #app-screen { display:none; max-width:680px; margin:0 auto; padding:22px 16px 90px; }
 
     .greeting { margin-bottom:22px; }
     .g-date { font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:5px; }
@@ -258,17 +258,31 @@
     #ios-banner strong { color:var(--text); }
     #ios-close-btn { position:absolute; top:10px; right:13px; font-size:16px; cursor:pointer; color:var(--text-muted); background:none; border:none; }
 
-    #install-btn {
-      display:none; position:fixed; bottom:22px; right:18px; z-index:150;
-      background:linear-gradient(135deg,var(--green),var(--green-dark));
-      color:#fff; border:none; border-radius:50px;
-      padding:12px 18px; font-size:13px; font-weight:600;
-      font-family:'DM Sans',sans-serif; cursor:pointer;
-      box-shadow:0 4px 22px rgba(45,125,58,.5);
-      align-items:center; gap:6px;
-      animation:bounce 2s ease-in-out infinite;
+    /* Permanent install button - small, centered at bottom */
+    .perm-install-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      color: #fff;
+      border: none;
+      border-radius: 40px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      z-index: 150;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      transition: transform 0.1s, background 0.2s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
-    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    .perm-install-btn:active {
+      transform: translateX(-50%) scale(0.96);
+    }
 
     footer { text-align:center; padding:18px; font-size:11px; color:var(--text-muted); border-top:1px solid var(--border); margin-top:30px; }
 
@@ -346,6 +360,9 @@
   <footer>© 2026 TeaJay Konsult Ltd. All rights reserved.</footer>
 </div>
 
+<!-- Permanent install button (small, centered, always visible) -->
+<button class="perm-install-btn" id="installBtn">📲 Install App</button>
+
 <div class="overlay" id="write-modal">
   <div class="modal">
     <div class="modal-hdr">
@@ -402,8 +419,6 @@
   <p>📲 <strong>Install TeaJay Diary on iOS:</strong> Tap the <strong>Share</strong> icon in Safari, then tap <strong>"Add to Home Screen"</strong>.</p>
 </div>
 
-<button id="install-btn" onclick="installPWA()">⬇️ Install App</button>
-
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
@@ -438,7 +453,6 @@
   window.deleteEntry  = deleteEntry;
   window.pickMood     = pickMood;
   window.editFromView = editFromView;
-  window.installPWA   = installPWA;
 
   onAuthStateChanged(auth, u => { u ? showApp(u) : showAuth(); });
 
@@ -611,16 +625,34 @@
   }
   function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
+  // PWA install logic
   window.addEventListener('beforeinstallprompt', e => {
-    e.preventDefault(); deferredPrompt = e;
-    document.getElementById('install-btn').style.display = 'flex';
+    e.preventDefault();
+    deferredPrompt = e;
+    // Button already visible, just store the prompt
   });
 
-  function installPWA() {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(()=>{ deferredPrompt=null; document.getElementById('install-btn').style.display='none'; });
-  }
+  window.installPWA = async function() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        deferredPrompt = null;
+      }
+    } else {
+      let instructions = '';
+      if (/android/i.test(navigator.userAgent)) {
+        instructions = 'Tap the browser menu (⋮) and select "Install app" or "Add to Home Screen".';
+      } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+        instructions = 'Tap the Share button (⬆️) then "Add to Home Screen".';
+      } else {
+        instructions = 'Use your browser\'s "Add to Home Screen" or "Install" option.';
+      }
+      alert(`📲 Install TeaJay Diary:\n\n${instructions}\n\nIf you just opened the app, wait a few seconds and try again.`);
+    }
+  };
+
+  document.getElementById('installBtn').addEventListener('click', window.installPWA);
 
   function checkInstall() {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
