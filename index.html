@@ -294,130 +294,130 @@
 </head>
 <body>
 
-<header>
-  <div class="brand">
-    <div class="brand-icon">🌿</div>
-    <div>
-      <div class="brand-name">TeaJay Diary</div>
-      <div class="brand-sub">TeaJay Konsult Ltd.</div>
-    </div>
+  <div id="ios-banner">
+    <button id="ios-close-btn" onclick="document.getElementById('ios-banner').style.display='none'">✕</button>
+    <p>📲 <strong>Install TeaJay Diary on iOS:</strong> Tap the <strong>Share</strong> icon in Safari, then tap <strong>"Add to Home Screen"</strong>.</p>
   </div>
-  <div class="hdr-right">
-    <span id="hdr-email"></span>
-    <button class="btn btn-ghost btn-sm" id="logout-btn" style="display:none" onclick="handleLogout()">Sign Out</button>
-  </div>
-</header>
 
-<div id="auth-screen">
-  <div class="auth-card">
-    <div class="auth-top">
-      <span class="auth-icon">🌲</span>
-      <h2>Your Diary Awaits</h2>
-      <p>A quiet place for your thoughts</p>
+  <header>
+    <div class="brand">
+      <div class="brand-icon">🌿</div>
+      <div>
+        <div class="brand-name">TeaJay Diary</div>
+        <div class="brand-sub">TeaJay Konsult Ltd.</div>
+      </div>
     </div>
-    <div class="auth-tabs">
-      <div class="tab-btn active" id="tab-in" onclick="switchTab('login')">Sign In</div>
-      <div class="tab-btn" id="tab-up" onclick="switchTab('signup')">Sign Up</div>
+    <div class="hdr-right">
+      <span id="hdr-email"></span>
+      <button class="btn btn-ghost btn-sm" id="logout-btn" style="display:none" onclick="handleLogout()">Sign Out</button>
     </div>
-    <div id="auth-err" class="auth-error"></div>
-    <div class="form-group" id="name-grp" style="display:none">
-      <label>Full Name</label>
-      <input type="text" id="auth-name" placeholder="Your name" />
-    </div>
-    <div class="form-group">
-      <label>Email</label>
-      <input type="email" id="auth-email" placeholder="your@email.com" />
-    </div>
-    <div class="form-group">
-      <label>Password</label>
-      <input type="password" id="auth-pass" placeholder="••••••••" />
-    </div>
-    <button class="btn btn-primary btn-full" id="auth-btn" onclick="handleAuth()">Sign In</button>
-    <div class="share-block" style="margin-top:24px">
-      <div class="share-lbl">Share this app</div>
-      <div class="share-row">
-        <a class="s-btn s-wa" href="https://wa.me/?text=Check%20out%20TeaJay%20Diary%20%F0%9F%8C%BF%20https%3A%2F%2Fteajaykonsult-diary-app.vercel.app" target="_blank">💬 WhatsApp</a>
-        <a class="s-btn s-fb" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fteajaykonsult-diary-app.vercel.app" target="_blank">📘 Facebook</a>
-        <a class="s-btn s-x" href="https://twitter.com/intent/tweet?text=Check%20out%20TeaJay%20Diary%20%F0%9F%8C%BF%20https%3A%2F%2Fteajaykonsult-diary-app.vercel.app" target="_blank">𝕏 Share</a>
+  </header>
+
+  <!-- Permanent install button -->
+  <button class="perm-install-btn" id="installBtn">📲 Install App</button>
+
+  <div id="auth-screen">
+    <div class="auth-card">
+      <div class="auth-top">
+        <span class="auth-icon">🌲</span>
+        <h2>Your Diary Awaits</h2>
+        <p>A quiet place for your thoughts</p>
+      </div>
+      <div class="auth-tabs">
+        <div class="tab-btn active" id="tab-in" onclick="switchTab('login')">Sign In</div>
+        <div class="tab-btn" id="tab-up" onclick="switchTab('signup')">Sign Up</div>
+      </div>
+      <div id="auth-err" class="auth-error"></div>
+      <div class="form-group" id="name-grp" style="display:none">
+        <label>Full Name</label>
+        <input type="text" id="auth-name" placeholder="Your name" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="auth-email" placeholder="your@email.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="auth-pass" placeholder="••••••••" />
+      </div>
+      <button class="btn btn-primary btn-full" id="auth-btn" onclick="handleAuth()">Sign In</button>
+      <div class="share-block" style="margin-top:24px">
+        <div class="share-lbl">Share this app</div>
+        <div class="share-row">
+          <a class="s-btn s-wa" href="https://wa.me/?text=Check%20out%20TeaJay%20Diary%20%F0%9F%8C%BF%20https%3A%2F%2Fteajaykonsult-diary-app.vercel.app" target="_blank">💬 WhatsApp</a>
+          <a class="s-btn s-fb" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fteajaykonsult-diary-app.vercel.app" target="_blank">📘 Facebook</a>
+          <a class="s-btn s-x" href="https://twitter.com/intent/tweet?text=Check%20out%20TeaJay%20Diary%20%F0%9F%8C%BF%20https%3A%2F%2Fteajaykonsult-diary-app.vercel.app" target="_blank">𝕏 Share</a>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div id="app-screen">
-  <div class="greeting">
-    <div class="g-date" id="g-date"></div>
-    <div class="g-text">Hello, <em id="g-name">Friend</em> 👋</div>
+  <div id="app-screen">
+    <div class="greeting">
+      <div class="g-date" id="g-date"></div>
+      <div class="g-text">Hello, <em id="g-name">Friend</em> 👋</div>
+    </div>
+    <div class="offline-badge" id="offline-badge">📴 You're offline — your entries are still available and any changes will sync when you reconnect.</div>
+    <div class="new-entry-bar" onclick="openNew()">
+      <span>✏️&nbsp; What's on your mind today?</span>
+    </div>
+    <div class="sec-title">Your Entries</div>
+    <div class="entries-list" id="entries-list">
+      <div class="loading">Loading your entries…</div>
+    </div>
+    <footer>© 2026 TeaJay Konsult Ltd. All rights reserved.</footer>
   </div>
-  <div class="offline-badge" id="offline-badge">📴 You're offline — your entries are still available and any changes will sync when you reconnect.</div>
-  <div class="new-entry-bar" onclick="openNew()">
-    <span>✏️&nbsp; What's on your mind today?</span>
-  </div>
-  <div class="sec-title">Your Entries</div>
-  <div class="entries-list" id="entries-list">
-    <div class="loading">Loading your entries…</div>
-  </div>
-  <footer>© 2026 TeaJay Konsult Ltd. All rights reserved.</footer>
-</div>
 
-<!-- Permanent install button (small, centered, always visible) -->
-<button class="perm-install-btn" id="installBtn">📲 Install App</button>
-
-<div class="overlay" id="write-modal">
-  <div class="modal">
-    <div class="modal-hdr">
-      <div class="modal-hdr-title" id="write-modal-title">New Entry</div>
-      <div class="modal-close" onclick="closeWrite()">✕</div>
-    </div>
-    <input type="text" class="entry-title-input" id="w-title" placeholder="Give this entry a title…" />
-    <div class="mood-row">
-      <div class="mood-chip" data-mood="😊" onclick="pickMood(this)">😊 Happy</div>
-      <div class="mood-chip" data-mood="😔" onclick="pickMood(this)">😔 Sad</div>
-      <div class="mood-chip" data-mood="😤" onclick="pickMood(this)">😤 Frustrated</div>
-      <div class="mood-chip" data-mood="😌" onclick="pickMood(this)">😌 Calm</div>
-      <div class="mood-chip" data-mood="🥳" onclick="pickMood(this)">🥳 Excited</div>
-      <div class="mood-chip" data-mood="🤔" onclick="pickMood(this)">🤔 Thinking</div>
-    </div>
-    <textarea class="entry-body-input" id="w-body" placeholder="Pour your thoughts here… this is your safe space."></textarea>
-    <div class="modal-footer">
-      <button class="btn btn-gold" onclick="saveEntry()">💾 Save Entry</button>
-      <button class="btn btn-ghost" onclick="closeWrite()">Cancel</button>
-      <button class="btn btn-danger" id="del-btn" style="display:none;margin-left:auto" onclick="deleteEntry()">🗑 Delete</button>
-    </div>
-  </div>
-</div>
-
-<div class="overlay" id="view-modal">
-  <div class="modal">
-    <div class="modal-hdr">
-      <div class="modal-hdr-title">Entry</div>
-      <div class="modal-close" onclick="closeView()">✕</div>
-    </div>
-    <div class="view-title" id="v-title"></div>
-    <div class="view-meta">
-      <span class="view-date" id="v-date"></span>
-      <span id="v-mood" style="font-size:18px"></span>
-    </div>
-    <div class="view-body" id="v-body"></div>
-    <div class="modal-footer">
-      <button class="btn btn-primary btn-sm" onclick="editFromView()">✏️ Edit</button>
-      <button class="btn btn-ghost btn-sm" onclick="closeView()">Close</button>
-    </div>
-    <div class="share-block">
-      <div class="share-lbl">Share this app</div>
-      <div class="share-row">
-        <a class="s-btn s-wa" id="v-wa" href="#" target="_blank">💬 WhatsApp</a>
-        <a class="s-btn s-fb" id="v-fb" href="#" target="_blank">📘 Facebook</a>
-        <a class="s-btn s-x"  id="v-x"  href="#" target="_blank">𝕏 Share</a>
+  <div class="overlay" id="write-modal">
+    <div class="modal">
+      <div class="modal-hdr">
+        <div class="modal-hdr-title" id="write-modal-title">New Entry</div>
+        <div class="modal-close" onclick="closeWrite()">✕</div>
+      </div>
+      <input type="text" class="entry-title-input" id="w-title" placeholder="Give this entry a title…" />
+      <div class="mood-row">
+        <div class="mood-chip" data-mood="😊" onclick="pickMood(this)">😊 Happy</div>
+        <div class="mood-chip" data-mood="😔" onclick="pickMood(this)">😔 Sad</div>
+        <div class="mood-chip" data-mood="😤" onclick="pickMood(this)">😤 Frustrated</div>
+        <div class="mood-chip" data-mood="😌" onclick="pickMood(this)">😌 Calm</div>
+        <div class="mood-chip" data-mood="🥳" onclick="pickMood(this)">🥳 Excited</div>
+        <div class="mood-chip" data-mood="🤔" onclick="pickMood(this)">🤔 Thinking</div>
+      </div>
+      <textarea class="entry-body-input" id="w-body" placeholder="Pour your thoughts here… this is your safe space."></textarea>
+      <div class="modal-footer">
+        <button class="btn btn-gold" onclick="saveEntry()">💾 Save Entry</button>
+        <button class="btn btn-ghost" onclick="closeWrite()">Cancel</button>
+        <button class="btn btn-danger" id="del-btn" style="display:none;margin-left:auto" onclick="deleteEntry()">🗑 Delete</button>
       </div>
     </div>
   </div>
-</div>
 
-<div id="ios-banner">
-  <button id="ios-close-btn" onclick="document.getElementById('ios-banner').style.display='none'">✕</button>
-  <p>📲 <strong>Install TeaJay Diary on iOS:</strong> Tap the <strong>Share</strong> icon in Safari, then tap <strong>"Add to Home Screen"</strong>.</p>
-</div>
+  <div class="overlay" id="view-modal">
+    <div class="modal">
+      <div class="modal-hdr">
+        <div class="modal-hdr-title">Entry</div>
+        <div class="modal-close" onclick="closeView()">✕</div>
+      </div>
+      <div class="view-title" id="v-title"></div>
+      <div class="view-meta">
+        <span class="view-date" id="v-date"></span>
+        <span id="v-mood" style="font-size:18px"></span>
+      </div>
+      <div class="view-body" id="v-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" onclick="editFromView()">✏️ Edit</button>
+        <button class="btn btn-ghost btn-sm" onclick="closeView()">Close</button>
+      </div>
+      <div class="share-block">
+        <div class="share-lbl">Share this app</div>
+        <div class="share-row">
+          <a class="s-btn s-wa" id="v-wa" href="#" target="_blank">💬 WhatsApp</a>
+          <a class="s-btn s-fb" id="v-fb" href="#" target="_blank">📘 Facebook</a>
+          <a class="s-btn s-x"  id="v-x"  href="#" target="_blank">𝕏 Share</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
@@ -453,6 +453,53 @@
   window.deleteEntry  = deleteEntry;
   window.pickMood     = pickMood;
   window.editFromView = editFromView;
+
+  // ==================== IMPROVED INSTALL BUTTON LOGIC ====================
+  const installBtn = document.getElementById('installBtn');
+
+  // If app is already installed (standalone mode), hide the install button permanently
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    if (installBtn) installBtn.style.display = 'none';
+  }
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    console.log('beforeinstallprompt fired');
+    if (installBtn && !window.matchMedia('(display-mode: standalone)').matches) {
+      installBtn.style.display = 'flex';
+    }
+  });
+
+  window.addEventListener('appinstalled', () => {
+    console.log('App installed successfully');
+    deferredPrompt = null;
+    if (installBtn) installBtn.style.display = 'none';
+  });
+
+  async function installApp() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        console.log('User accepted install');
+        if (installBtn) installBtn.style.display = 'none';
+      }
+      deferredPrompt = null;
+    } else {
+      let instructions = '';
+      if (/android/i.test(navigator.userAgent)) {
+        instructions = 'Tap the browser menu (⋮) and select "Install app" or "Add to Home Screen".';
+      } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+        instructions = 'Tap the Share button (⬆️) then "Add to Home Screen".';
+      } else {
+        instructions = 'Use your browser\'s "Add to Home Screen" or "Install" option.';
+      }
+      alert(`📲 Install TeaJay Diary:\n\n${instructions}\n\nIf you just opened the app, wait a few seconds and try again.`);
+    }
+  }
+  if (installBtn) installBtn.addEventListener('click', installApp);
+  // =======================================================================
 
   onAuthStateChanged(auth, u => { u ? showApp(u) : showAuth(); });
 
@@ -624,35 +671,6 @@
     return new Date(ts).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
   }
   function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-  // PWA install logic
-  window.addEventListener('beforeinstallprompt', e => {
-    e.preventDefault();
-    deferredPrompt = e;
-    // Button already visible, just store the prompt
-  });
-
-  window.installPWA = async function() {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        deferredPrompt = null;
-      }
-    } else {
-      let instructions = '';
-      if (/android/i.test(navigator.userAgent)) {
-        instructions = 'Tap the browser menu (⋮) and select "Install app" or "Add to Home Screen".';
-      } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
-        instructions = 'Tap the Share button (⬆️) then "Add to Home Screen".';
-      } else {
-        instructions = 'Use your browser\'s "Add to Home Screen" or "Install" option.';
-      }
-      alert(`📲 Install TeaJay Diary:\n\n${instructions}\n\nIf you just opened the app, wait a few seconds and try again.`);
-    }
-  };
-
-  document.getElementById('installBtn').addEventListener('click', window.installPWA);
 
   function checkInstall() {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
